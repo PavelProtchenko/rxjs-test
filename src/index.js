@@ -1,5 +1,5 @@
 import {fromEvent} from 'rxjs'
-import {map, debounceTime} from 'rxjs/operators'
+import {map, debounceTime, distinctUntilChanged} from 'rxjs/operators'
 
 const url = 'https://api.github.com/search/users/q='
 
@@ -8,7 +8,8 @@ const search = document.getElementById('search')
 const stream$ = fromEvent(search, 'input')
   .pipe(
     map(e => e.target.value),
-    debounceTime(1000)
+    debounceTime(1000),
+    distinctUntilChanged()
   )
 
 stream$.subscribe(value => {
